@@ -50,3 +50,11 @@
 * [CMake](tools/cmake.md)
 * [Latex](tools/latex.md)
 
+## Python
+
+* [Untitled](python/untitled.md)
+
+## C++ <a id="c++-1"></a>
+
+* [Untitled](c++-1/untitled.md)
+
