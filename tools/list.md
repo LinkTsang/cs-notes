@@ -37,7 +37,7 @@
 * Ransack
 * AutoHotkey
 * RescueTime
-* Ditto 剪贴板
+* Ditto 剪贴板（`Win + V`）
 * QuickLook
 * Beyond CompareDuplicate Cleaner
 * FastCopy
