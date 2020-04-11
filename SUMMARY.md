@@ -17,12 +17,14 @@
 
 ## 人工智能 <a id="ren-gong-zhi-neng-1"></a>
 
-* [经典人工智能](ren-gong-zhi-neng-1/ai/README.md)
+* [机器学习](ren-gong-zhi-neng-1/ai/README.md)
   * [Overview](ren-gong-zhi-neng-1/ai/overview.md)
   * [决策树](ren-gong-zhi-neng-1/ai/jue-ce-shu.md)
   * [神经网络](ren-gong-zhi-neng-1/ai/shen-jing-wang-luo.md)
   * [SVM](ren-gong-zhi-neng-1/ai/svm.md)
+  * [贝叶斯分类器](ren-gong-zhi-neng-1/ai/bei-ye-si-fen-lei-qi.md)
   * [集成学习](ren-gong-zhi-neng-1/ai/ensemble.md)
+  * [聚类](ren-gong-zhi-neng-1/ai/ju-lei.md)
 * [Deep Learning](ren-gong-zhi-neng-1/deep-learning/README.md)
   * [基础](ren-gong-zhi-neng-1/deep-learning/basic.md)
   * [逻辑回归](ren-gong-zhi-neng-1/deep-learning/logistic-regression.md)
@@ -40,4 +42,11 @@
 * [CSS](web-front/css.md)
 * [JavaScript](web-front/javascript.md)
 * [React](web-front/react.md)
+
+## Tools
+
+* [List](tools/list.md)
+* [Git](tools/git.md)
+* [CMake](tools/cmake.md)
+* [Latex](tools/latex.md)
 
