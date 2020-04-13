@@ -52,7 +52,9 @@
 
 ## Python
 
-* [Untitled](python/untitled.md)
+* [conda](python/untitled.md)
+* [Debug](python/debug.md)
+* [2to3](python/2to3.md)
 
 ## C++ <a id="c++-1"></a>
 

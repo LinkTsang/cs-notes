@@ -9,7 +9,13 @@
 * MiKTeX
 * git
 * cmake
-* 
+* X64dbg
+* Alacritty
+* WSL + xrdp
+* CLOC \(Rust version's LOC\)
+* curl/wget
+* postman/fiddler2/wireshark
+
 ## 浏览器
 
 ### Firefox
