@@ -34,6 +34,14 @@
   * [GCN](ren-gong-zhi-neng-1/deep-learning/gcn.md)
   * [Practice](ren-gong-zhi-neng-1/deep-learning/practice/README.md)
     * [Overview](ren-gong-zhi-neng-1/deep-learning/practice/overview.md)
+  * [Tensorflow](ren-gong-zhi-neng-1/deep-learning/tensorflow/README.md)
+    * [脚手架](ren-gong-zhi-neng-1/deep-learning/tensorflow/jiao-shou-jia.md)
+    * [性能调优](ren-gong-zhi-neng-1/deep-learning/tensorflow/xing-neng-tiao-you.md)
+    * [FAQ](ren-gong-zhi-neng-1/deep-learning/tensorflow/faq.md)
+  * [Pytorch](ren-gong-zhi-neng-1/deep-learning/pytorch/README.md)
+    * [脚手架](ren-gong-zhi-neng-1/deep-learning/pytorch/jiao-shou-jia.md)
+    * [性能调优](ren-gong-zhi-neng-1/deep-learning/pytorch/xing-neng-tiao-you.md)
+    * [FAQ](ren-gong-zhi-neng-1/deep-learning/pytorch/faq.md)
 * [参考资料](ren-gong-zhi-neng-1/see-also.md)
 
 ## 前端 <a id="web-front"></a>
@@ -55,6 +63,7 @@
 * [conda](python/untitled.md)
 * [Debug](python/debug.md)
 * [2to3](python/2to3.md)
+* [性能调优](python/xing-neng-tiao-you.md)
 
 ## C++ <a id="c++-1"></a>
 
