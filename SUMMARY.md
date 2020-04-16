@@ -27,6 +27,7 @@
   * [聚类](ren-gong-zhi-neng-1/ai/ju-lei.md)
 * [Deep Learning](ren-gong-zhi-neng-1/deep-learning/README.md)
   * [基础](ren-gong-zhi-neng-1/deep-learning/basic.md)
+  * [数据预处理](ren-gong-zhi-neng-1/deep-learning/shu-ju-yu-chu-li.md)
   * [逻辑回归](ren-gong-zhi-neng-1/deep-learning/logistic-regression.md)
   * [CNN](ren-gong-zhi-neng-1/deep-learning/cnn.md)
   * [序列模型](ren-gong-zhi-neng-1/deep-learning/seq.md)

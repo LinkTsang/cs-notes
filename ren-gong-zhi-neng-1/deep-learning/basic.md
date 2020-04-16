@@ -14,32 +14,6 @@
 
 
 
-## Feature scaling\(特征缩放\)
-
- **Rescaling**
-
-$$
-x' = \frac{x - \text{min}(x)}{\text{max}(x)-\text{min}(x)}
-$$
-
- **Mean normalization**
-
-$$
-x' = \frac{x - \text{average}(x)}{\text{max}(x)-\text{min}(x)}
-$$
-
- **Standardization**
-
-$$
-x' = \frac{x - \bar{x}}{\sigma}
-$$
-
- **Scaling to unit length**
-
-$$
-x'= \frac{x}{\|x\|}
-$$
-
 \*\*\*\*
 
 
