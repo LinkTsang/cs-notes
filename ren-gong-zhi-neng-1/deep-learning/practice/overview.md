@@ -11,6 +11,13 @@
 | TVM |  |
 | Numpy |  |
 | scikit-learn |  |
+|  |  |
+|  |  |
+|  |  |
 
-
+|  |  |
+| :--- | :--- |
+| Pillow |  |
+| pandas |  |
+|  |  |
 
