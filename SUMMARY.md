@@ -49,7 +49,8 @@
 
 * [HTML](web-front/html.md)
 * [CSS](web-front/css.md)
-* [JavaScript](web-front/javascript.md)
+* [JavaScript](web-front/javascript/README.md)
+  * [Untitled](web-front/javascript/untitled.md)
 * [React](web-front/react.md)
 
 ## Tools
