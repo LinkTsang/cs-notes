@@ -50,7 +50,7 @@
 * [HTML](web-front/html.md)
 * [CSS](web-front/css.md)
 * [JavaScript](web-front/javascript/README.md)
-  * [Untitled](web-front/javascript/untitled.md)
+  * [《现代 JavaScript 教程》 笔记](web-front/javascript/untitled.md)
 * [React](web-front/react.md)
 
 ## Tools
