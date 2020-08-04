@@ -3787,9 +3787,150 @@ function throttle(func, ms) {
 
 ## [函数绑定](https://zh.javascript.info/bind)
 
+当将对象方法作为回调进行传递，例如传递给 `setTimeout`，这儿会存在一个常见的问题：“丢失 `this`”。解决方法有：包装器、函数绑定。
+
+### [丢失 “this”](https://zh.javascript.info/bind#diu-shi-this)
+
+```javascript
+let user = {
+  firstName: "John",
+  sayHi() {
+    alert(`Hello, ${this.firstName}!`);
+  }
+};
+
+setTimeout(user.sayHi, 1000); // Hello, undefined!
+```
+
+浏览器中的 `setTimeout` 方法有些特殊：它为函数调用设定了 `this=window`（对于 Node.js，`this` 则会变为计时器（timer）对象，但在这儿并不重要）。
+
+### [解决方案 1：包装器](https://zh.javascript.info/bind#jie-jue-fang-an-1-bao-zhuang-qi)
+
+```javascript
+let user = {
+  firstName: "John",
+  sayHi() {
+    alert(`Hello, ${this.firstName}!`);
+  }
+};
 
 
+setTimeout(function() {
+  user.sayHi(); // Hello, John!
+ }, 1000);
+// 或者是更简洁的：
+setTimeout(() => user.sayHi(), 1000);
 
+
+// 存在问题：
+// ……user 的值在不到 1 秒的时间内发生了改变
+user = {
+  sayHi() { alert("Another user in setTimeout!"); }
+};
+
+// Another user in setTimeout!
+```
+
+### [解决方案 2：bind](https://zh.javascript.info/bind#jie-jue-fang-an-2-bind)
+
+基本用法
+
+```javascript
+let boundFunc = func.bind(context);
+```
+
+便捷方法：`bindAll`，完成对象所有方法的绑定
+
+```javascript
+for (let key in user) {
+  if (typeof user[key] == 'function') {
+    user[key] = user[key].bind(user);
+  }
+}
+```
+
+JavaScript 库还提供了方便批量绑定的函数，例如 lodash 中的 [_.bindAll(object, methodNames)](http://lodash.com/docs#bindAll)。
+
+#### [偏函数（Partial functions）](https://zh.javascript.info/bind#pian-han-shu-partialfunctions)
+
+`bind` 的完整语法如下：
+
+```javascript
+let bound = func.bind(context, [arg1], [arg2], ...);
+```
+
+可以用来创建偏函数
+
+### [在没有上下文情况下的 partial](https://zh.javascript.info/bind#zai-mei-you-shang-xia-wen-qing-kuang-xia-de-partial)
+
+```javascript
+function partial(func, ...argsBound) {
+  return function(...args) { // (*)
+    return func.call(this, ...argsBound, ...args);
+  }
+}
+```
+
+此外，还有来自 lodash 库的现成的 [_.partial](https://lodash.com/docs#partial) 实现。
+
+### [任务](https://zh.javascript.info/bind#tasks)
+
+#### [作为方法的绑定函数](https://zh.javascript.info/bind#zuo-wei-fang-fa-de-bang-ding-han-shu)
+
+```javascript
+function f() {
+  alert( this ); // null
+}
+
+let user = {
+  g: f.bind(null)
+};
+
+user.g();
+```
+
+绑定函数的上下文是硬绑定（hard-fixed）的。没有办法再修改它。
+
+所以即使我们执行 `user.g()`，源方法调用时还是 `this=null`。
+
+#### [二次 bind](https://zh.javascript.info/bind#er-ci-bind)
+
+```javascript
+function f() {
+  alert(this.name);
+}
+
+f = f.bind( {name: "John"} ).bind( {name: "Pete"} );
+
+f(); // John
+```
+
+`f.bind(...)` 返回的外来（exotic）[绑定函数](https://tc39.github.io/ecma262/#sec-bound-function-exotic-objects) 对象仅在创建的时候记忆上下文（以及参数，如果提供了的话）。一个函数不能被重绑定（re-bound）。
+
+所以第一次之后的绑定是不起作用的。
+
+#### [bind 后的函数属性](https://zh.javascript.info/bind#bind-hou-de-han-shu-shu-xing)
+
+```javascript
+function sayHi() {
+  alert( this.name );
+}
+sayHi.test = 5;
+
+let bound = sayHi.bind({
+  name: "John"
+});
+
+alert( bound.test ); // 输出将会是什么？为什么？
+```
+
+答案：`undefined`。
+
+`bind` 的结果是另一个对象。它并没有 `test` 属性。
+
+#### [修复丢失了 "this" 的函数](https://zh.javascript.info/bind#xiu-fu-diu-shi-le-this-de-han-shu)
+
+#### [偏函数在登录中的应用](https://zh.javascript.info/bind#pian-han-shu-zai-deng-lu-zhong-de-ying-yong)
 
 ## [深入理解箭头函数](https://zh.javascript.info/arrow-functions)
 
