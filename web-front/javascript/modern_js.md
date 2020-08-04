@@ -3585,9 +3585,205 @@ setTimeout(function run() {
 
 ## [装饰者模式和转发，call/apply](https://zh.javascript.info/call-apply-decorators)
 
+### [透明缓存](https://zh.javascript.info/call-apply-decorators#tou-ming-huan-cun)
 
+```javascript
+function cachingDecorator(func) {
+  let cache = new Map();
 
+  return function(x) {
+    if (cache.has(x)) {    // 如果缓存中有对应的结果
+      return cache.get(x); // 从缓存中读取结果
+    }
 
+    let result = func(x);  // 否则就调用 func
+
+    cache.set(x, result);  // 然后将结果缓存（记住）下来
+    return result;
+  };
+}
+```
+
+### [使用 “func.call” 设定上下文](https://zh.javascript.info/call-apply-decorators#shi-yong-funccall-she-ding-shang-xia-wen)
+
+上面提到的缓存装饰者不适用于对象方法。
+
+对于对象，应使用 `func.call`
+
+```javascript
+function cachingDecorator(func) {
+  let cache = new Map();
+  return function(x) {
+    if (cache.has(x)) {
+      return cache.get(x);
+    }
+    let result = func.call(this, x); // 现在 "this" 被正确地传递了
+    cache.set(x, result);
+    return result;
+  };
+}
+
+worker.slow = cachingDecorator(worker.slow); // 现在对其进行缓存
+```
+
+### [传递多个参数](https://zh.javascript.info/call-apply-decorators#chuan-di-duo-ge-can-shu)
+
+📌这里注意 `arguments` **不是**数组，仅仅是类数组、可迭代对象。
+
+```javascript
+function cachingDecorator(func, hash) {
+  let cache = new Map();
+  return function() {
+    let key = hash(arguments); // (*)
+    if (cache.has(key)) {
+      return cache.get(key);
+    }
+
+    let result = func.call(this, ...arguments); // (**)
+
+    cache.set(key, result);
+    return result;
+  };
+}
+```
+
+### [func.apply](https://zh.javascript.info/call-apply-decorators#funcapply)
+
+我们可以使用 `func.apply(this, arguments)` 代替 `func.call(this, ...arguments)`。
+
+内建方法 [func.apply](https://developer.mozilla.org/zh/docs/Web/JavaScript/Reference/Global_Objects/Function/apply) 的语法是：
+
+```javascript
+func.apply(context, args);   // 与使用 call 相同
+// 对比：
+func.call(context, ...args); // 使用 spread 语法将数组作为列表传递
+```
+
+这里只有很小的区别：
+
+- Spread 语法 `...` 允许将 **可迭代对象** `args` 作为列表传递给 `call`。
+- `apply` 仅接受 **类数组对象** `args`。
+
+因此，当我们期望可迭代对象时，使用 `call`，当我们期望类数组对象时，使用 `apply`。
+
+对于即可迭代又是类数组的对象，例如一个真正的数组，我们使用 `call` 或 `apply` 均可，但是 `apply` 可能会更快，因为大多数 JavaScript 引擎在内部对其进行了优化。
+
+将所有参数连同上下文一起传递给另一个函数被称为“呼叫转移（call forwarding）”。
+
+这是它的最简形式：
+
+```javascript
+let wrapper = function() {
+  return func.apply(this, arguments);
+};
+```
+
+### [方法借用](https://zh.javascript.info/call-apply-decorators#method-borrowing)
+
+问题：`arguments`不是数组没有`join`方法
+
+```javascript
+function hash() {
+  alert( arguments.join() ); // Error: arguments.join is not a function
+}
+
+hash(1, 2);
+```
+
+解决方法： **方法借用（method borrowing）**
+
+```javascript
+function hash() {
+  alert([].join.call(arguments)); // 1,2
+}
+
+hash(1, 2);
+```
+
+### [装饰者和函数属性](https://zh.javascript.info/call-apply-decorators#zhuang-shi-zhe-he-han-shu-shu-xing)
+
+问题：如果原始函数具有某些属性，而装饰者未提供，则可能出现问题。
+
+解决方法：存在一种创建装饰者的方法，该装饰者可保留对函数属性的访问权限，但这需要使用特殊的 `Proxy` 对象来包装函数。我们将在后面的 [Proxy 和 Reflect](https://zh.javascript.info/proxy#proxy-apply) 中学习它。
+
+### 任务
+
+#### [间谍装饰者](https://zh.javascript.info/call-apply-decorators#jian-die-zhuang-shi-zhe)
+
+#### [延时装饰者](https://zh.javascript.info/call-apply-decorators#yan-shi-zhuang-shi-zhe)
+
+#### [Debounce decorator](https://zh.javascript.info/call-apply-decorators#debouncedecorator)
+
+防抖修饰器
+
+**debounce**: Grouping a sudden burst of events (like keystrokes) into a single one.
+**防抖**：将一组例如按下按键这种密集的事件归并成一个单独事件。
+
+```javascript
+function debounce(func, ms) {
+  let timeout;
+  return function() {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, arguments), ms);
+  };
+}
+```
+
+#### [节流装饰者](https://zh.javascript.info/call-apply-decorators#jie-liu-zhuang-shi-zhe)
+
+**throttle**: Guaranteeing a constant flow of executions every X milliseconds.
+**节流**：保证每 X 毫秒恒定地执行一些操作。
+
+```javascript
+function throttle(func, ms) {
+
+  let isThrottled = false,
+    savedArgs,
+    savedThis;
+
+  function wrapper() {
+
+    if (isThrottled) { // (2)
+      savedArgs = arguments;
+      savedThis = this;
+      return;
+    }
+
+    func.apply(this, arguments); // (1)
+
+    isThrottled = true;
+
+    setTimeout(function() {
+      isThrottled = false; // (3)
+      if (savedArgs) {
+        wrapper.apply(savedThis, savedArgs);
+        savedArgs = savedThis = null;
+      }
+    }, ms);
+  }
+
+  return wrapper;
+}
+```
+
+调用 `throttle(func, ms)` 返回 `wrapper`。
+
+1. 在第一次调用期间，`wrapper` 只运行 `func` 并设置冷却状态（`isThrottled = true`）。
+2. 在这种状态下，所有调用都记忆在 `savedArgs/savedThis` 中。请注意，上下文和参数（arguments）同等重要，应该被记下来。我们同时需要他们以重现调用。
+3. ……然后经过 `ms` 毫秒后，触发 `setTimeout`。冷却状态被移除（`isThrottled = false`），如果我们忽略了调用，则将使用最后记忆的参数和上下文执行 `wrapper`。
+
+第 3 步运行的不是 `func`，而是 `wrapper`，因为我们不仅需要执行 `func`，还需要再次进入冷却状态并设置 timeout 以重置它。
+
+小结：
+
+- `debounce` 会在“冷却（cooldown）”期后运行函数一次。适用于处理最终结果。
+- `throttle` 运行函数的频率不会大于所给定的时间 `ms` 毫秒。适用于不应该经常进行的定期更新。
+
+参考：
+
+[知乎专栏：Nero：函数的防抖和节流是个啥？？？](https://zhuanlan.zhihu.com/p/72923073)
+
+[知乎专栏：手撕源码系列 —— lodash 的 debounce 与 throttle](https://zhuanlan.zhihu.com/p/91110334)
 
 ## [函数绑定](https://zh.javascript.info/bind)
 
