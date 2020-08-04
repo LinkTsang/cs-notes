@@ -3462,11 +3462,126 @@ new Function('a , b', 'return a + b'); // 逗号和空格分隔
 
 这两个方法并不在 JavaScript 的规范中。但是大多数运行环境都有内建的调度程序，并且提供了这些方法。目前来讲，所有浏览器以及 Node.js 都支持这两个方法。
 
+### [setTimeout](https://zh.javascript.info/settimeout-setinterval#settimeout)
+
+语法：
+
+```javascript
+let timerId = setTimeout(func|code, [delay], [arg1], [arg2], ...)
+```
+
+不建议使用字符串形式的`code`
+
+#### [用 clearTimeout 来取消调度](https://zh.javascript.info/settimeout-setinterval#yong-cleartimeout-lai-qu-xiao-tiao-du)
+
+```javascript
+let timerId = setTimeout(() => alert("never happens"), 1000);
+alert(timerId); // 定时器标识符
+
+clearTimeout(timerId);
+alert(timerId); // 还是这个标识符（并没有因为调度被取消了而变成 null）
+```
+
+浏览器中定时器标识符是一个数字，node.js 中则是一个定时器对象。针对浏览器环境，定时器在 HTML5 的标准中有详细描述，详见 [timers section](https://www.w3.org/TR/html5/webappapis.html#timers)。
+
+### [setInterval](https://zh.javascript.info/settimeout-setinterval#setinterval)
+
+语法类似 `setTimeout`
+
+```javascript
+let timerId = setInterval(func|code, [delay], [arg1], [arg2], ...)
+                          
+// 每 2 秒重复一次
+let timerId = setInterval(() => alert('tick'), 2000);
+
+// 5 秒之后停止
+setTimeout(() => { clearInterval(timerId); alert('stop'); }, 5000);
+
+/****
+alert 弹窗显示的时候计时器依然在进行计时
+在大多数浏览器中，包括 Chrome 和 Firefox，在显示 alert/confirm/prompt 弹窗时，内部的定时器仍旧会继续“嘀嗒”。
+所以，在运行上面的代码时，如果在一定时间内没有关掉 alert 弹窗，那么在你关闭弹窗后，下一个 alert 会立即显示。两次 alert 之间的时间间隔将小于 2 秒。
+****/
+```
+
+### [嵌套的 setTimeout](https://zh.javascript.info/settimeout-setinterval#qian-tao-de-settimeout)
+
+比 `setInterval` 跟灵活
+
+例如，我们要实现一个服务（server），每间隔 5 秒向服务器发送一个数据请求，但如果服务器过载了，那么就要降低请求频率，比如将间隔增加到 10、20、40 秒等。
+
+```javascript
+let delay = 5000;
+
+let timerId = setTimeout(function request() {
+  ...发送请求...
+
+  if (request failed due to server overload) {
+    // 下一次执行的间隔是当前的 2 倍
+    delay *= 2;
+  }
+
+  timerId = setTimeout(request, delay);
+
+}, delay);
+```
+
+**嵌套的 `setTimeout` 能够精确地设置两次执行之间的延时，而 `setInterval` 却不能。**
+
+`setInterval`
+
+![image-20200804155218525](modern_js.assets/image-20200804155218525.png)
+
+`setTimeout`
+
+![image-20200804155301777](modern_js.assets/image-20200804155301777.png)
+
+垃圾回收和 setInterval/setTimeout 回调（callback）
+
+当一个函数传入 `setInterval/setTimeout` 时，将为其创建一个内部引用，并保存在调度程序中。这样，即使这个函数没有其他引用，也能防止垃圾回收器（GC）将其回收。直到 `clearInterval/clearTimeout` 被调用。
+
+### [零延时的 setTimeout](https://zh.javascript.info/settimeout-setinterval#ling-yan-shi-de-settimeout)
+
+特殊的用法：`setTimeout(func, 0)`，或者仅仅是 `setTimeout(func)`。
+
+这样调度可以让 `func` 尽快执行。但是只有在当前正在执行的脚本执行完成后，调度程序才会调用它。
+
+也就是说，该函数被调度在当前脚本执行完成“之后”立即执行。
 
 
 
+⚡零延时实际上不为零（在浏览器中）
+
+在浏览器环境下，嵌套定时器的运行频率是受限制的。根据 [HTML5 标准](https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers) 所讲：“经过 5 重嵌套定时器之后，时间间隔被强制设定为至少 4 毫秒”。
+
+（即先以零延时运行四次，第五次开始强制设定为至少 4 毫秒）
+
+```javascript
+let start = Date.now();
+let times = [];
+
+setTimeout(function run() {
+  times.push(Date.now() - start); // 保存前一个调用的延时
+
+  if (start + 100 < Date.now()) alert(times); // 100 毫秒之后，显示延时信息
+  else setTimeout(run); // 否则重新调度
+});
+
+// 输出示例：
+// 1,1,1,1,9,15,20,24,30,35,40,45,50,55,59,64,70,75,80,85,90,95,100
+```
+
+对于服务端的 JavaScript，就没有这个限制，并且还有其他调度即时异步任务的方式。例如 Node.js 的 [setImmediate](https://nodejs.org/api/timers.html)。
 
 
+
+注意，所有的调度方法都**不能** **保证** 确切的延时。
+
+例如，浏览器内的计时器可能由于许多原因而变慢：
+
+- CPU 过载。
+- 浏览器页签处于后台模式。
+- 笔记本电脑用的是电池供电（译注：使用电池供电会以降低性能为代价提升续航）。
 
 ## [装饰者模式和转发，call/apply](https://zh.javascript.info/call-apply-decorators)
 
