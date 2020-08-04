@@ -3934,9 +3934,49 @@ alert( bound.test ); // 输出将会是什么？为什么？
 
 ## [深入理解箭头函数](https://zh.javascript.info/arrow-functions)
 
+### [箭头函数没有 “this”](https://zh.javascript.info/arrow-functions#jian-tou-han-shu-mei-you-this)
+
+如果访问 `this`，则会从外部获取。因此也不能对箭头函数进行 `new` 操作。
 
 
 
+箭头函数 VS bind
+
+箭头函数 `=>` 和使用 `.bind(this)` 调用的常规函数之间有细微的差别：
+
+- `.bind(this)` 创建了一个该函数的“绑定版本”。
+- 箭头函数 `=>` 没有创建任何绑定。箭头函数只是没有 `this`。`this` 的查找与常规变量的搜索方式完全相同：在外部词法环境中查找。
+
+### [箭头函数没有 “arguments”](https://zh.javascript.info/arrow-functions#jian-tou-han-shu-mei-you-arguments)
+
+当我们需要使用当前的 `this` 和 `arguments` 转发一个调用时，这对装饰者（decorators）来说非常有用。
+
+```javascript
+function defer(f, ms) {
+  return function() {
+    setTimeout(() => f.apply(this, arguments), ms)
+  };
+}
+
+// 不使用箭头函数则必须创建额外的变量 args 和 ctx
+function defer(f, ms) {
+  return function(...args) {
+    let ctx = this;
+    setTimeout(function() {
+      return f.apply(ctx, args);
+    }, ms);
+  };
+}
+```
+
+### [总结](https://zh.javascript.info/arrow-functions#zong-jie)
+
+箭头函数：
+
+- 没有 `this`
+- 没有 `arguments`
+- 不能使用 `new` 进行调用
+- 它们也没有 `super`，但目前我们还没有学到它。我们将在 [类继承](https://zh.javascript.info/class-inheritance) 一章中学习它。
 
 # [原型，继承](https://zh.javascript.info/prototypes)
 
