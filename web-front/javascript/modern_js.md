@@ -3978,6 +3978,224 @@ function defer(f, ms) {
 - 不能使用 `new` 进行调用
 - 它们也没有 `super`，但目前我们还没有学到它。我们将在 [类继承](https://zh.javascript.info/class-inheritance) 一章中学习它。
 
+
+
+# 属性标志和属性描述符
+
+
+
+## [属性标志](https://zh.javascript.info/property-descriptors#shu-xing-biao-zhi)
+
+对象属性（properties），除 **`value`** 外，还有三个特殊的特性（attributes），也就是所谓的“标志”：
+
+- **`writable`** — 如果为 `true`，则值可以被修改，否则它是只可读的。
+- **`enumerable`** — 如果为 `true`，则会被在循环中列出，否则不会被列出。
+- **`configurable`** — 如果为 `true`，则此特性可以被删除，这些属性也可以被修改，否则不可以。
+
+```javascript
+let descriptor = Object.getOwnPropertyDescriptor(obj, propertyName);
+
+/* 属性描述符：
+{
+  "value": "value",
+  "writable": true,
+  "enumerable": true,
+  "configurable": true
+}
+*/
+```
+
+
+
+为了修改标志，我们可以使用 [Object.defineProperty](https://developer.mozilla.org/zh/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)。
+
+语法是：
+
+```javascript
+Object.defineProperty(obj, propertyName, descriptor)
+```
+
+如果该属性存在，`defineProperty` 会更新其标志。否则，它会使用给定的值和标志创建属性；在这种情况下，如果没有提供标志，则会假定它是 `false`。
+
+### [只读](https://zh.javascript.info/property-descriptors#zhi-du)
+
+📌只在严格模式下会出现 Errors
+
+在非严格模式下，在对不可写的属性等进行写入操作时，不会出现错误。但是操作仍然不会成功。在非严格模式下，违反标志的行为（flag-violating action）只会被默默地忽略掉。
+
+### [不可枚举](https://zh.javascript.info/property-descriptors#bu-ke-mei-ju)
+
+通常，对象的内置 `toString` 是不可枚举的，它不会显示在 `for..in` 中。但是如果我们添加我们自己的 `toString`，那么默认情况下它将显示在 `for..in` 中，如下所示：
+
+```javascript
+let user = {
+  name: "John",
+  toString() {
+    return this.name;
+  }
+};
+
+// 默认情况下，我们的两个属性都会被列出：
+for (let key in user) alert(key); // name, toString
+
+Object.defineProperty(user, "toString", {
+  enumerable: false
+});
+
+// 现在我们的 toString 消失了：
+for (let key in user) alert(key); // name
+```
+
+不可枚举的属性也会被 `Object.keys` 排除：
+
+```javascript
+alert(Object.keys(user)); // name
+```
+
+### [不可配置](https://zh.javascript.info/property-descriptors#bu-ke-pei-zhi)
+
+不可配置标志（`configurable:false`）有时会预设在内建对象和属性中。
+
+不可配置的属性不能被删除。
+
+例如，`Math.PI` 是只读的、不可枚举和不可配置的
+
+**使属性变成不可配置是一条单行道。**我们无法使用 `defineProperty` 把它改回去。
+
+确切地说，不可配置性对 `defineProperty` 施加了一些限制：
+
+1. 不能修改 `configurable` 标志。
+2. 不能修改 `enumerable` 标志。
+3. 不能将 `writable: false` 修改为 `true`（反之亦然）。
+4. 不能修改访问者属性的 `get/set`（但是如果没有可以分配它们）。
+
+### [Object.defineProperties](https://zh.javascript.info/property-descriptors#objectdefineproperties)
+
+有一个方法 [Object.defineProperties(obj, descriptors)](https://developer.mozilla.org/zh/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties)，允许一次定义多个属性。
+
+语法是：
+
+```javascript
+Object.defineProperties(obj, {
+  prop1: descriptor1,
+  prop2: descriptor2
+  // ...
+});
+```
+
+### [Object.getOwnPropertyDescriptors](https://zh.javascript.info/property-descriptors#objectgetownpropertydescriptors)
+
+要一次获取所有属性描述符，我们可以使用 [Object.getOwnPropertyDescriptors(obj)](https://developer.mozilla.org/zh/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors) 方法。
+
+它与 `Object.defineProperties` 一起可以用作克隆对象的“标志感知”方式：
+
+```javascript
+let clone = Object.defineProperties({}, Object.getOwnPropertyDescriptors(obj));
+```
+
+通常，当我们克隆一个对象时，我们使用赋值的方式来复制属性，像这样：
+
+```javascript
+for (let key in user) {
+  clone[key] = user[key]
+}
+```
+
+……但是，这并不能复制标志。所以如果我们想要一个“更好”的克隆，那么 `Object.defineProperties` 是首选。
+
+另一个区别是 `for..in` 会忽略 symbol 类型的属性，但是 `Object.getOwnPropertyDescriptors` 返回包含 symbol 类型的属性在内的 **所有** 属性描述符。
+
+### [设定一个全局的密封对象](https://zh.javascript.info/property-descriptors#she-ding-yi-ge-quan-ju-de-mi-feng-dui-xiang)
+
+属性描述符在单个属性的级别上工作。
+
+还有一些限制访问 **整个** 对象的方法：
+
+- [Object.preventExtensions(obj)](https://developer.mozilla.org/zh/docs/Web/JavaScript/Reference/Global_Objects/Object/preventExtensions)
+
+  禁止向对象添加新属性。
+
+- [Object.seal(obj)](https://developer.mozilla.org/zh/docs/Web/JavaScript/Reference/Global_Objects/Object/seal)
+
+  禁止添加/删除/修改属性。为所有现有的属性设置 `configurable: false`。
+
+- [Object.freeze(obj)](https://developer.mozilla.org/zh/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
+
+  禁止添加/删除/更改属性。为所有现有的属性设置 `configurable: false, writable: false`。
+
+还有针对它们的测试：
+
+- [Object.isExtensible(obj)](https://developer.mozilla.org/zh/docs/Web/JavaScript/Reference/Global_Objects/Object/isExtensible)
+
+  如果添加属性被禁止，则返回 `false`，否则返回 `true`。
+
+- [Object.isSealed(obj)](https://developer.mozilla.org/zh/docs/Web/JavaScript/Reference/Global_Objects/Object/isSealed)
+
+  如果添加/删除属性被禁止，并且所有现有的属性都具有 `configurable: false`则返回 `true`。
+
+- [Object.isFrozen(obj)](https://developer.mozilla.org/zh/docs/Web/JavaScript/Reference/Global_Objects/Object/isFrozen)
+
+  如果添加/删除/更改属性被禁止，并且所有当前属性都是 `configurable: false, writable: false`，则返回 `true`。
+
+这些方法在实际中很少使用。
+
+## 属性的 getter 和 setter
+
+有两种类型的对象属性。
+
+第一种是 **数据属性**。我们已经知道如何使用它们了。到目前为止，我们使用过的所有属性都是数据属性。
+
+第二种类型的属性是新东西。它是 **访问器属性（accessor properties）**。它们本质上是用于获取和设置值的函数，但从外部代码来看就像常规属性。
+
+### [Getter 和 setter](https://zh.javascript.info/property-accessors#getter-he-setter)
+
+访问器属性由 “getter” 和 “setter” 方法表示。在对象字面量中，它们用 `get` 和 `set` 表示：
+
+```javascript
+let obj = {
+  get propName() {
+    // 当读取 obj.propName 时，getter 起作用
+  },
+
+  set propName(value) {
+    // 当执行 obj.propName = value 操作时，setter 起作用
+  }
+};
+```
+
+### [访问器描述符](https://zh.javascript.info/property-accessors#fang-wen-qi-miao-shu-fu)
+
+访问器属性的描述符与数据属性的不同。
+
+对于访问器属性，没有 `value` 和 `writable`，但是有 `get` 和 `set` 函数。
+
+所以访问器描述符可能有：
+
+- **`get`** —— 一个没有参数的函数，在读取属性时工作，
+- **`set`** —— 带有一个参数的函数，当属性被设置时调用，
+- **`enumerable`** —— 与数据属性的相同，
+- **`configurable`** —— 与数据属性的相同。
+
+请注意，一个属性要么是访问器（具有 `get/set` 方法），要么是数据属性（具有 `value`），但不能两者都是。
+
+如果我们试图在同一个描述符中同时提供 `get` 和 `value`，则会出现错误：
+
+```javascript
+// Error: Invalid property descriptor.
+Object.defineProperty({}, 'prop', {
+  get() {
+    return 1
+  },
+  value: 2
+});
+```
+
+### [兼容性](https://zh.javascript.info/property-accessors#jian-rong-xing)
+
+访问器的一大用途是，它们允许随时通过使用 `getter` 和 `setter` 替换“正常的”数据属性，来控制和调整这些属性的行为。作用：改动内部代码，同时使旧的外部代码也可以工作。
+
+
+
 # [原型，继承](https://zh.javascript.info/prototypes)
 
 
