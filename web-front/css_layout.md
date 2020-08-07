@@ -1,5 +1,23 @@
 # CSS布局
 
+[TOC]
+
+
+
+
+
+## 盒子模型
+
+传统的盒子模型（`box-sizing:content-box`）实际绘制大小： 
+$$
+size = content + padding + border
+$$
+
+使用 `box-sizing: border-box;` 的盒子模型实际绘制大小：
+$$
+size = content
+$$
+
 ## 默认布局
 
 `display` 的值为 `block`, `inline` 或者 `inline-block`。
