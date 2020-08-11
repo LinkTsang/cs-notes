@@ -18,6 +18,12 @@
 
 - `window.requestAnimationFrame(callback)`
 
-
 ### Develop and Debug
+
 - [VSCode with Firefox](https://marketplace.visualstudio.com/items?itemName=firefox-devtools.vscode-firefox-debug)
+
+
+
+### DOM
+
+EventTarget <- Node <- Element <- HTMLElement

@@ -45,6 +45,7 @@ git checkout -b <new_branch>   # git branch _ + git checkout _
 git branch -d <branch>
 
 git merge <branch>
+git cherry-pick <commit>
 
 # rebase
 git rebase -i
