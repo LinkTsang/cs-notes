@@ -15,6 +15,8 @@
 
 - 单元测试、持续集成
   - Mocha
+  - jest
+  - Chai
   - Selenium
   - Travis CI
 
@@ -22,6 +24,9 @@
   - React
   - Vue.js
   - Angular
+  - Editor
+    - Monaco Editor
+    - CodeMirror
 
 - HTML 变种
   - Emmet
