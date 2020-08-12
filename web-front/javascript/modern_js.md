@@ -4199,6 +4199,60 @@ Object.defineProperty({}, 'prop', {
 # [原型，继承](https://zh.javascript.info/prototypes)
 
 
+## [原型继承](https://zh.javascript.info/prototype-inheritance)
+
+在编程中，我们经常会想获取并扩展一些东西。我们想重用现有对象中的内容，而不是复制/重新实现它的方法，而只是在其至上构建一个新的对象。**原型继承（Prototypal inheritance）** 这个语言特性能够帮助我们实现这一需求。
+
+**原型继承（Prototypal inheritance）** 这个语言特性能够帮助我们实现这一需求。
+
+### [[[Prototype\]]](https://zh.javascript.info/prototype-inheritance#prototype)
+
+在 JavaScript 中，对象有一个特殊的隐藏属性 `[[Prototype]]`（如规范中所命名的），它要么为 `null`，要么就是对另一个对象的引用。该对象被称为“原型”。
+
+原型有点“神奇”。当我们想要从 `object` 中读取一个缺失的属性时，JavaScript 会自动从原型中获取该属性。在编程中，这种行为被称为“原型继承”。许多炫酷的语言特性和编程技巧都基于此。
+
+属性 `[[Prototype]]` 是内部的而且是隐藏的，但是这儿有很多设置它的方式。其中之一就是使用特殊的名字 `__proto__`。
+
+请注意，`__proto__` 与 `[[Prototype]]` **不一样**。`__proto__` 是 `[[Prototype]]` 的 getter/setter。
+
+`__proto__` 的存在是历史的原因。在现代编程语言中，将其替换为函数 `Object.getPrototypeOf/Object.setPrototypeOf` 也能 get/set 原型。
+
+有两个限制：
+
+1. 引用不能形成闭环。如果我们试图在一个闭环中分配 `__proto__`，JavaScript 会抛出错误。
+2. `__proto__` 的值可以是对象，也可以是 `null`。而其他的类型都会被忽略。
+
+当然，这可能很显而易见，但是仍然要强调：只能有一个 `[[Prototype]]`。一个对象不能从其他两个对象获得继承。
+
+### [写入不使用原型](https://zh.javascript.info/prototype-inheritance#xie-ru-bu-shi-yong-yuan-xing)
+
+原型仅用于读取属性。
+
+对于写入/删除操作可以直接在对象上进行。
+
+访问器（accessor）属性是一个例外，因为分配（assignment）操作是由 setter 函数处理的。因此，写入此类属性实际上与调用函数相同。
+
+### [“this” 的值](https://zh.javascript.info/prototype-inheritance#this-de-zhi)
+
+**无论在哪里找到方法：在一个对象还是在原型中。在一个方法调用中，`this` 始终是点符号 `.` 前面的对象。**
+
+
+
+
+
+
+
+## [F.prototype](https://zh.javascript.info/function-prototype)
+
+
+## [原生的原型](https://zh.javascript.info/native-prototypes)
+
+
+## [原型方法，没有 __proto__ 的对象](https://zh.javascript.info/prototype-methods)
+
+
+
+
 
 
 
