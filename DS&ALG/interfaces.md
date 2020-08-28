@@ -1,8 +1,82 @@
 # JavaScript
+- [JavaScript](#javascript)
+  - [Number](#number)
+    - [属性](#属性)
+    - [方法](#方法)
+    - [Prototype 实例](#prototype-实例)
+    - [数值转换技巧](#数值转换技巧)
+  - [Math](#math)
+  - [String](#string)
+    - [Prototype](#prototype)
+  - [Array](#array)
+    - [prototype](#prototype-1)
+      - [修改原数组](#修改原数组)
+      - [不修改原数组](#不修改原数组)
+      - [迭代](#迭代)
+    - [例子](#例子)
+      - [复制数组](#复制数组)
+  - [Map](#map)
+    - [Object 对比](#object-对比)
+    - [prototype](#prototype-2)
+  - [Set](#set)
+    - [prototype](#prototype-3)
+
+
 ## Number
+双精度IEEE 754 64位浮点
+64 = 1 + 11 + 52
+
+### 属性
+```javascript
+Number.EPSILON // 2^-52
+Number.MAX_SAFE_INTEGER // 2^53 - 1
+Number.MAX_VALUE
+Number.MIN_SAFE_INTEGER // 
+Number.MIN_VALUE
+Number.NaN
+Number.NEGATIVE_INFINITY
+Number.POSITIVE_INFINITY
+```
+
+### 方法
+```
+Number.isNaN()
+Number.isFinite()
+Number.isInteger()
+Number.isSafeInteger()
+Number.parseFloat()
+Number.parseInt()
+```
+
+### Prototype 实例
+```javascript
+toPrecision(precision) // precision /in [1, 100]
+toExponential(fractionDigits) // fractionDigits /in [0, 20]
+toFixed(digits) // digits /in [0, 20]
+toString([radix])  // radix /in [2, 36]
+```
+
 
 ### 数值转换技巧
+```javascript
+let n = +s;
+```
 
+## Math
+```javascript
+abs(x)
+pow(x, y)
+sqrt(x)
+sign(x)
+max(…x)
+min(…x)
+round(x)
+floor(x)
+ceil(x)
+trunc(x)
+
+random() => [0, 1)
+```
 
 ## String
 immutable string
@@ -62,22 +136,6 @@ toSource() => string
 toString() => string
 valueOf() => string
 
-```
-
-## Math
-```javascript
-abs(x)
-pow(x, y)
-sqrt(x)
-sign(x)
-max(…x)
-min(…x)
-round(x)
-floor(x)
-ceil(x)
-trunc(x)
-
-random() => [0, 1)
 ```
 
 ## Array
