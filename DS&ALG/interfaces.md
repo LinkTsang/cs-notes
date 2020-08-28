@@ -1,4 +1,68 @@
 # JavaScript
+## Number
+
+### 数值转换技巧
+
+
+## String
+immutable string
+
+### Prototype
+```javascript
+length
+.[N]
+
+charAt(index) => string // out of range => ""
+charCodeAt(pos) => 2 bytes UTF-16 number // out of range => NaN
+codePointAt(pos) => Unicode point number, supports 4 bytes // out of range => NaN
+[@@iterator]() // string[Symbol.iterator]()
+
+includes(searchString[, position]) => boolean
+startsWith(searchString[, position]) => boolean
+endsWith(searchString[, length]) => boolean
+
+indexOf() => index | -1
+lastIndexOf() => index | -1
+search(regexp) => index | -1
+match(regexp) => groups | undefined, index, input
+replace(regexp|substr, newSubStr|function) => String
+replaceAll(regexp|substr, newSubStr|function) => String
+
+function replacer(match, p1, p2, ..., offset, string /* source string */, NamedCaptureGroup);
+
+
+padStart(targetLength [, padString]) => String // default padString=" "(U+0020)
+padEnd(targetLength [, padString]) => String // default padString=" "(U+0020)
+
+repeat(count) => String // count /in [0, +Inf]
+split([separator[, limit]]) => Array
+slice(beginIndex[, endIndex]) => String // supports negative index
+substring(indexStart[, indexEnd]) => String // not supports negative index
+
+trim() => string
+trimStart() => string
+trimLeft() => string
+trimEnd() => string
+trimRight() => string
+
+
+toLocaleLowerCase() => string
+toLocaleUpperCase() => string
+toLowerCase() => string
+toUpperCase() => string
+
+concat(str2, [, ...strN]) => new string // use +, += instead
+
+// For integrity only
+substr(start[, length]) // Deprecated
+localeCompare(compareString[, locales[, options]]) => -1 | 0 | 1
+quote()
+normalize() => string
+toSource() => string
+toString() => string
+valueOf() => string
+
+```
 
 ## Math
 ```javascript
@@ -15,7 +79,6 @@ trunc(x)
 
 random() => [0, 1)
 ```
-
 
 ## Array
 ```javascript
