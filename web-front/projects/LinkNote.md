@@ -18,6 +18,32 @@
 - 模拟计算
 
 
+编辑后光标位置重新计算
+```
+a text
+=> <span>a</span><span> </span><span>text</span>
+
+a text
+ ^
+
+a sample text
+         ^
+```
+
+普通文本
+- Line 模型
+- Line Token 模型
+
+代码高亮
+```javascript
+function hello() {
+  console.log("Hello");
+}
+```
+
+富文本?
+
+
 ### 文本长度计算
 - 单一字体
   - 等宽字体 Monospaced Font

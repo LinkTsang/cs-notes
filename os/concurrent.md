@@ -1,0 +1,1 @@
+[Actor Model](https://www.brianstorti.com/the-actor-model/)
