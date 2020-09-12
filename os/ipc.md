@@ -14,6 +14,7 @@ RPC := Remote Procedure Call
 - [Apache Avro](https://avro.apache.org/)
 - [Apache Thrift](https://thrift.apache.org)
 - [gRPC](https://grpc.io/docs/)
+- [ICE: Internet Communications Engine](https://github.com/zeroc-ice/ice)
 - [JSON-RPC](https://www.jsonrpc.org/specification)
 - [Mojo](https://chromium.googlesource.com/chromium/src/+/master/mojo/README.md)
 - [WCF: Windows Communication Foundation](https://docs.microsoft.com/en-us/dotnet/framework/wcf/whats-wcf)
