@@ -29,6 +29,24 @@ RPC := Remote Procedure Call
   - 等等
 - 针对服务的可用性和效率等进行优化
 
+### 对比
+
+- HTTP/TCP/UDP/WebSocket/Socket/...
+
+  - 缺点
+    - HTTP/2 之前的协议开销大
+    - 需要自己实现数据封装
+    - 需要自己实现客户端、服务端
+    - 关注底层协议、状态
+
+- XML-RPC/JSON-RPC/SOAP/RESTful
+
+- gRPC
+
+  - 基于 HTTP/2
+
+- Apache Thrift
+
 ### See Also
 
 - [知乎：既然有 HTTP 请求，为什么还要用 RPC 调用？](https://www.zhihu.com/question/41609070)
