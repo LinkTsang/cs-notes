@@ -1,4 +1,5 @@
 # JavaScript
+
 - [JavaScript](#javascript)
   - [Number](#number)
     - [属性](#属性)
