@@ -1,8 +1,11 @@
 {
   "cSpell.words": [
+    "Protobuf",
     "hexdigits",
+    "keyof",
     "ndigits",
     "octdigits",
-    "repr"
+    "repr",
+    "unmount"
   ]
 }
