@@ -19,6 +19,10 @@ print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)
 
 输出格式
 
+### 注意
+
+对于 `list` 等传引用的类型，记得检查是否需要进行拷贝，如 `l[:]`。
+
 ## 常用内置函数
 
 ```python
