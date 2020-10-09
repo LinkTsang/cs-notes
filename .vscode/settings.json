@@ -1,9 +1,14 @@
 {
   "cSpell.words": [
+    "CUDA",
     "Protobuf",
+    "Pytorch",
+    "backends",
+    "cudnn",
     "hexdigits",
     "keyof",
     "ndigits",
+    "numpy",
     "octdigits",
     "repr",
     "unmount"
