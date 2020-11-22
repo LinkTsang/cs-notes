@@ -1,3 +1,20 @@
+# ip
+
+```bash
+ip addr
+
+
+```
+
+# ifconfig
+
+```bash
+ifconfig
+
+
+
+```
+
 # ufw - Uncomplicated Firewall
 
 ```bash
@@ -14,6 +31,7 @@ sudo ufw insert 1 allow 80
 sudo ufw deny 22
 sudo ufw delete deny 22
 
+sudo ufw --dry-run allow http
 
 ```
 
