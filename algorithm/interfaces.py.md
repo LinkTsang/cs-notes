@@ -9,7 +9,7 @@
 x, y = list(map(int, input().split()))
 ```
 
-注：当读取到 EOF 时，则触发 EOFError。
+注：当读取到 `EOF` 时，则触发 `EOFError`。
 
 ### 输出
 
@@ -165,67 +165,67 @@ list.copy()
 
 #### `collections.deque([iterable[, maxlen]])`
 
-- append(x)
+- `append(x)`
 
-  Add x to the right side of the deque.
+  Add `x` to the right side of the deque.
 
-- appendleft(x)
+- `appendleft(x)`
 
-  Add x to the left side of the deque.
+  Add `x` to the left side of the deque.
 
-- clear()
+- `clear()`
 
   Remove all elements from the deque leaving it with length 0.
 
-- copy()
+- `copy()`
 
   Create a shallow copy of the deque.
 
-- count(x)
+- `count(x)`
 
-  Count the number of deque elements equal to x.
+  Count the number of deque elements equal to `x`.
 
-- extend(iterable)
+- `extend(iterable)`
 
-  Extend the right side of the deque by appending elements from the iterable argument.
+  Extend the right side of the deque by appending elements from the `iterable` argument.
 
-- extendleft(iterable)
+- `extendleft(iterable)`
 
-  Extend the left side of the deque by appending elements from iterable. Note, the series of left appends results in reversing the order of elements in the iterable argument.
+  Extend the left side of the deque by appending elements from `iterable`. Note, the series of left appends results in reversing the order of elements in the `iterable` argument.
 
-- index(x[, start[, stop]])
+- `index(x[, start[, stop]])`
 
-  Return the position of x in the deque (at or after index start and before index stop). Returns the first match or raises ValueError if not found.
+  Return the position of x in the deque (at or after index start and before index stop). Returns the first match or raises `ValueError` if not found.
 
-- insert(i, x)
+- `insert(i, x)`
 
-  Insert x into the deque at position i.
+  Insert x into the deque at position `i`.
 
-  If the insertion would cause a bounded deque to grow beyond maxlen, an IndexError is raised.
+  If the insertion would cause a bounded deque to grow beyond `maxlen`, an `IndexError `is raised.
 
-- pop()
+- `pop()`
 
-  Remove and return an element from the right side of the deque. If no elements are present, raises an IndexError.
+  Remove and return an element from the right side of the deque. If no elements are present, raises an `IndexError`.
 
-- popleft()
+- `popleft()`
 
-  Remove and return an element from the left side of the deque. If no elements are present, raises an IndexError.
+  Remove and return an element from the left side of the deque. If no elements are present, raises an `IndexError`.
 
-- remove(value)
+- `remove(value)`
 
-  Remove the first occurrence of value. If not found, raises a ValueError.
+  Remove the first occurrence of value. If not found, raises a `ValueError`.
 
-- reverse()
+- `reverse()`
 
-  Reverse the elements of the deque in-place and then return None.
+  Reverse the elements of the deque in-place and then return `None`.
 
-- rotate(n=1)
+- `rotate(n=1)`
 
   Rotate the deque n steps to the right. If n is negative, rotate to the left.
 
-  When the deque is not empty, rotating one step to the right is equivalent to d.appendleft(d.pop()), and rotating one step to the left is equivalent to d.append(d.popleft()).
+  When the deque is not empty, rotating one step to the right is equivalent to `d.appendleft(d.pop())`, and rotating one step to the left is equivalent to `d.append(d.popleft())`.
 
-- maxlen
+- `maxlen`
 
   Maximum size of a deque or None if unbounded.
 
