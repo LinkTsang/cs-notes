@@ -34,6 +34,7 @@ max(arg1, arg2, *args[, key])
 min(iterable, *[, key, default])
 min(arg1, arg2, *args[, key])
 pow(base, exp[, mod])
+q, r = divmod(x, y)
 round(number[, ndigits])
 sum(iterable, /, start=0)
 
